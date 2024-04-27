@@ -26,20 +26,33 @@ const MusicPostInfo = () => {
     };
 
     const handleDelete = async () => {
-      if (window.confirm("Do you want to delete this post?")) {
-          toast.info('Deleting post...');
-          setTimeout(async () => {
-              const { error } = await supabase.from('musictable').delete().eq('id', id);
-              if (error) {
-                  console.error('Error deleting post:', error.message);
-                  toast.error('Failed to delete post.');
-              } else {
-                  toast.success('Post deleted successfully!');
-                  navigate('/gallery'); // Redirect to the gallery after deletion
-              }
-          }, 1000);
-      }
-  };
+        if (window.confirm("Do you want to delete this post?")) {
+            try {
+                // First, delete all related votes
+                const { error: deleteVotesError } = await supabase
+                    .from('votes2')
+                    .delete()
+                    .match({ post_id: id });
+                
+                if (deleteVotesError) throw deleteVotesError;
+    
+                // Then, delete the post
+                const { error: deletePostError } = await supabase
+                    .from('musictable')
+                    .delete()
+                    .match({ id: id });
+                
+                if (deletePostError) throw deletePostError;
+    
+                toast.success('Post deleted successfully!');
+                navigate('/gallery');
+            } catch (error) {
+                console.error('Error deleting post:', error.message);
+                toast.error(`Failed to delete post: ${error.message}`);
+            }
+        }
+    };
+    
 
   const handleEdit = () => {
     navigate(`/edit/${id}`); // Assuming you have a route for editing posts
