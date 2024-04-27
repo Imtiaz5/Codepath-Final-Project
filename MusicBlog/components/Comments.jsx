@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { supabase } from '/client/supabaseClient';
 
 // eslint-disable-next-line react/prop-types
@@ -9,26 +9,27 @@ const Comments = ({ postId }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    // Wrap fetchComments with useCallback
-    const fetchComments = useCallback(async () => {
+    const fetchComments = async () => {
         setLoading(true);
-        const { data, error } = await supabase
-            .from('new_comments')
-            .select('*')
-            .eq('post_id', postId)
-            .order('created_at', { ascending: false });
+        try {
+            const { data, error } = await supabase
+                .from('new_comments')
+                .select('*')
+                .eq('post_id', postId)
+                .order('created_at', { ascending: false });
 
-        if (error) {
-            setError(`Failed to load comments: ${error.message}`);
-        } else {
+            if (error) throw error;
             setComments(data);
+        } catch (error) {
+            setError(`Failed to load comments: ${error.message}`);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
-    }, [postId]); // postId is a dependency of fetchComments
+    };
 
     useEffect(() => {
         fetchComments();
-    }, [postId, fetchComments]); // Include fetchComments here
+    }, [postId]);
 
     const submitComment = async (e) => {
         e.preventDefault();
@@ -36,24 +37,37 @@ const Comments = ({ postId }) => {
             setError("Comment text cannot be empty.");
             return;
         }
-        const user = supabase.auth.user();
-        if (!user) {
-            setError('You must be logged in to comment.');
+
+        const { data: postData, error: postError } = await supabase
+            .from('musictable')
+            .select('*')
+            .eq('id', postId)
+            .single();
+
+        if (postError || !postData) {
+            setError(`No post found with ID ${postId} to comment on.`);
             return;
         }
 
-        setLoading(true);
-        const { data, error } = await supabase.from('new_comments').insert([
-            { post_id: postId, comment_text: commentText, created_by: user.email, created_at: new Date() }
-        ]);
+        try {
+            setLoading(true);
+            const { error } = await supabase.from('new_comments').insert([
+                { post_id: postId, comment_text: commentText, created_at: new Date().toISOString() }
+            ]);
 
-        if (error) {
+            if (error) {
+                throw error;
+            } else {
+                // Refresh comments to show the new one
+                await fetchComments();
+                setCommentText('');
+                setError('');
+            }
+        } catch (error) {
             setError(`Failed to submit comment: ${error.message}`);
-        } else {
-            setComments([data[0], ...comments]);
-            setCommentText('');
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     return (
@@ -74,7 +88,7 @@ const Comments = ({ postId }) => {
             {loading ? <p>Loading comments...</p> : comments.map(comment => (
                 <div key={comment.id} style={{ marginTop: '10px', padding: '10px', borderBottom: '1px solid #ccc' }}>
                     <p>{comment.comment_text}</p>
-                    <small>{`By ${comment.created_by} on ${new Date(comment.created_at).toLocaleString()}`}</small>
+                    <small>{`By Anonymous on ${new Date(comment.created_at).toLocaleString()}`}</small>
                 </div>
             ))}
         </div>

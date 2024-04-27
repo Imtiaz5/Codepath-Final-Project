@@ -96,7 +96,7 @@ body {
   overflow-y: auto;
   left: 0;
   top: 0; */
-  width: 12.5rem;
+  width: 11rem;
   background-color: var(--navbar-color);
   color: white;
   position: fixed;
@@ -338,7 +338,7 @@ iframe {
 
 button, input[type="submit"] {
   background-color: transparent; /* Make button background transparent */
-  color: var(--text-color); /* Use text color for button text */
+  color: #4CAF50; /* Use text color for button text */
   padding: 10px 20px; /* Padding inside the button */
   border: 1px solid #4CAF50; /* Green border */
   border-radius: 5px; /* Rounded corners */

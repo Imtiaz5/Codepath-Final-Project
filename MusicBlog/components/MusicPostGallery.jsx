@@ -9,31 +9,36 @@ const MusicPostGallery = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetchPosts();
-  }, [sortType, searchTerm]);  // React to changes in sortType or searchTerm
+    fetchPostsAndVotes();
+  }, [sortType, searchTerm]);
 
-  const fetchPosts = async () => {
-    let query = supabase.from('musictable').select('*');
+  const fetchPostsAndVotes = async () => {
+    try {
+      // Fetch posts
+      let { data: postsData, error: postsError } = await supabase.from('musictable').select('*');
+      if (postsError) throw postsError;
 
-    switch (sortType) {
-      case 'alphabetical':
-        query = query.order('title', { ascending: true });
-        break;
-      case 'date_asc':
-        query = query.order('created_at', { ascending: true });
-        break;
-      case 'date_desc':
-        query = query.order('created_at', { ascending: false });
-        break;
-      default:
-        break;
-    }
+      // Fetch votes
+      let { data: votesData, error: votesError } = await supabase.from('votes2').select('*');
+      if (votesError) throw votesError;
 
-    const { data, error } = await query;
-    if (error) {
-      console.log('Error fetching posts', error);
-    } else {
-      setPosts(data);
+      // Aggregate votes into upvotes and downvotes per post
+      const votesCount = votesData.reduce((acc, vote) => {
+        acc[vote.post_id] = acc[vote.post_id] || { upvotes: 0, downvotes: 0 };
+        vote.vote_type === 'up' ? acc[vote.post_id].upvotes++ : acc[vote.post_id].downvotes++;
+        return acc;
+      }, {});
+
+      // Combine posts with their votes
+      const postsWithVotes = postsData.map(post => ({
+        ...post,
+        upvotes: votesCount[post.id]?.upvotes || 0,
+        downvotes: votesCount[post.id]?.downvotes || 0,
+      }));
+
+      setPosts(postsWithVotes);
+    } catch (error) {
+      console.error('Error loading posts:', error.message);
     }
   };
 
@@ -47,9 +52,7 @@ const MusicPostGallery = () => {
     }
   };
 
-  const filteredPosts = posts.filter(post =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredPosts = posts.filter(post => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   function extractVideoID(url) {
     const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^\s&]+)/;
@@ -74,6 +77,7 @@ const MusicPostGallery = () => {
             <h3><Link to={`/post/${post.id}`}>{post.title}</Link></h3>
             <img src={`https://img.youtube.com/vi/${extractVideoID(post.youtube_link)}/0.jpg`} alt="Thumbnail" style={{ width: '100%', height: 'auto' }} />
             <p>{post.description}</p>
+            <p>Upvotes: {post.upvotes}, Downvotes: {post.downvotes}</p>
             <VoteButtons post={post} />
           </div>
         )) : (

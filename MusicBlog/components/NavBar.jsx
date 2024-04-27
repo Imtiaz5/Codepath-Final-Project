@@ -12,7 +12,7 @@ function NavBar() {
         <li><Link to="/">Home</Link></li>
         <li><Link to="/create">Create a Post</Link></li>
         <li><Link to="/gallery">Browse what others have created!</Link></li>
-        <li><Link to="/login">Login</Link></li>
+        {/* <li><Link to="/login">Login</Link></li> */}
         {/* <li><button onClick={() => supabase.auth.signOut()}>Logout</button></li> */}
       </ul>
     </nav>
