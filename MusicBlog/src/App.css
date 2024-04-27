@@ -8,6 +8,14 @@
   width: 100%;
 }
 
+:root {
+  --primary-color: #EDC7B7;  /* Buttons and interactive elements */
+  --background-color: #EEE2DC;  /* Main background */
+  --navbar-color: #584e52;  /* Navbar background */
+  --text-color: #123C69;  /* Primary text */
+  --accent-color: #B7DDED;  /* Highlights and active states */
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -71,6 +79,11 @@ html, body {
   overflow-x: hidden;
 }
 
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
 /* Navbar and Sidebar Styling */
 .sidebar {
   /* width: 12.5rem;
@@ -84,7 +97,7 @@ html, body {
   left: 0;
   top: 0; */
   width: 12.5rem;
-  background-color: #333;
+  background-color: var(--navbar-color);
   color: white;
   position: fixed;
   padding: 1rem;
@@ -108,20 +121,27 @@ html, body {
   width: calc(100% - 12.5rem);
 }
 
+.navbar {
+  background-color: var(--navbar-color);
+}
+
 .nav-bar ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  
 }
 
 .nav-bar li {
   padding: 0.5rem 0;
+  
 }
 
 .nav-bar a {
   color: white;
   text-decoration: none;
   display: block;
+  background-color: transparent;
 }
 
 .nav-bar a:hover {
@@ -129,10 +149,20 @@ html, body {
   color: #cccccc;
 }
 
+a, .button {
+  /* background-color: var(--primary-color); */
+  color: var(--text-color);
+}
+
+a:hover, .button:hover {
+  background-color: var(--text-color);
+  color: var(--background-color);
+}
+
 /* Card and Post Styles */
 .card {
-  background-color: #222;
-  color: white;
+  background-color: var(--accent-color);
+  color: var(--text-color);
   margin: 10px;
   padding: 20px;
   margin-bottom: 1rem;
@@ -150,18 +180,20 @@ html, body {
 
 .card h3 {
   margin-top: 0;
+  background-color: transparent;
+  color: inherit;
 }
 
 /* Form Styles */
 .form-card {
-  background-color: #333;
+  background-color: var(--accent-color);
   padding: 20px;
   margin: 20px auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   width: 80%;
   max-width: 500px;
-  color: white;
+  color: var(--text-color);
 }
 
 input[type="text"], input[type="number"], select, textarea {
@@ -171,6 +203,8 @@ input[type="text"], input[type="number"], select, textarea {
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background-color: var(--primary-color); /* Set the background color to peach */
+  color: var(--text-color);
 }
 
 input[type="submit"], button {
@@ -222,10 +256,14 @@ iframe {
   margin-bottom: 20px; /* Space below the header */
 }
 
+.home-container h1, .home-container p {
+  color: var(--text-color);  /* Dark blue for better visibility */
+}
+
 .home-container p {
-  color: #ccc; /* Light gray text for the paragraph */
-  max-width: 600px; /* Restricts paragraph width for better readability */
-  margin-bottom: 20px; /* Space below the paragraph */
+  color: #555; /* Dark grey for better readability against light peach background */
+  max-width: 600px;
+  margin-bottom: 20px;
 }
 
 .home-container a {
@@ -279,8 +317,37 @@ iframe {
   cursor: pointer;
   font-size: 16px;
   margin: 0 5px;
+  background: none;
+  border: none;
+  color: grey; /* Default color */
+  transition: color 0.3s;
 }
 
 .vote-button:hover {
   opacity: 0.8;
+  color: #123C69;
+}
+
+.vote-button.upvoted {
+  color: green; /* Permanent green when upvoted */
+}
+
+.vote-button.downvoted {
+  color: red; /* Permanent red when downvoted */
+}
+
+button, input[type="submit"] {
+  background-color: transparent; /* Make button background transparent */
+  color: var(--text-color); /* Use text color for button text */
+  padding: 10px 20px; /* Padding inside the button */
+  border: 1px solid #4CAF50; /* Green border */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+  font-weight: bold; /* Makes font bold */
+  cursor: pointer;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: #45a049; /* Green background on hover */
+  color: white; /* White text on hover */
 }
