@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// eslint-disable-next-line no-unused-vars
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from '/components/Home';
+import './App.css';
+import UpdatePostForm from '/components/UpdatePostForm';
+import CreatePost from '/components/CreatePost';
+import MusicPostGallery from '/components/MusicPostGallery';
+import MusicPostInfo from '/components/MusicPostInfo';
+import Login from '/components/Login';
+import CreateAccount from '/components/CreateAccount';    <Route path="/login" element={<Login />} />
+import Navbar from '/components/NavBar'; // Assuming you have a Navbar component
+//import NotFound from '/components/NotFound'; // A component to display when no route matches
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="container">
+        <div className="sidebar">
+          <Navbar />
+        </div>
+        <div className="main">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<CreateAccount />} />
+            <Route path="/gallery" element={<MusicPostGallery />} />
+            <Route path="/create" element={<CreatePost />} />
+            <Route path="/post/:id" element={<MusicPostInfo />} />
+            <Route path="/edit/:id" element={<UpdatePostForm />} />
+          </Routes>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;

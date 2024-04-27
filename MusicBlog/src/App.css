@@ -1,8 +1,11 @@
 #root {
-  max-width: 1280px;
+  /* max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  text-align: center; */
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
 }
 
 .logo {
@@ -34,9 +37,250 @@
 }
 
 .card {
-  padding: 2em;
+  background-color: black;
+  color: white;
+  margin: 10px;
+  padding: 20px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  width: 300px;  /* Fixed width for uniformity */
+  min-height: 200px;  /* Minimum height to accommodate shorter content */
+  max-height: 400px;  /* Maximum height before scrolling */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;  /* Stack content vertically */
+  justify-content: space-between;  /* Distributes space between items */
+  overflow-y: auto; 
 }
 
 .read-the-docs {
   color: #888;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Navbar and Sidebar Styling */
+.sidebar {
+  /* width: 12.5rem;
+  background-color: #333;
+  color: white;
+  position: fixed;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  height: 100vh;
+  overflow-y: auto;
+  left: 0;
+  top: 0; */
+  width: 12.5rem;
+  background-color: #333;
+  color: white;
+  position: fixed;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+}
+
+.main {
+  margin-left: 12.5rem; /* same as sidebar width */
+  flex-grow: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: calc(100% - 12.5rem);
+}
+
+.nav-bar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-bar li {
+  padding: 0.5rem 0;
+}
+
+.nav-bar a {
+  color: white;
+  text-decoration: none;
+  display: block;
+}
+
+.nav-bar a:hover {
+  text-decoration: underline;
+  color: #cccccc;
+}
+
+/* Card and Post Styles */
+.card {
+  background-color: #222;
+  color: white;
+  margin: 10px;
+  padding: 20px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  max-width: calc(50% - 20px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+/* Form Styles */
+.form-card {
+  background-color: #333;
+  padding: 20px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  color: white;
+}
+
+input[type="text"], input[type="number"], select, textarea {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input[type="submit"], button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover, button:hover {
+  background-color: #45a049;
+}
+
+/* Video Embed Styles */
+.video-embed-container {
+  text-align: center; /* Center align the video */
+  padding: 20px;
+  max-width: 100%; /* Limits the maximum width of the video */
+}
+
+iframe {
+  width: 560px; /* Width of the video */
+  height: 315px; /* Height of the video */
+  border: none;
+}
+
+@media screen and (max-width: 600px) {
+  iframe {
+    width: 100%; /* Full width on smaller screens */
+  }
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh; /* This ensures that the container takes at least the height of the viewport */
+  width: 100%; /* This ensures that the container takes the full width of its parent */
+  padding: 20px; /* Adds padding around the content */
+}
+
+/* Additional styling to enhance the home page */
+.home-container h1 {
+  color: #fff; /* White text color */
+  margin-bottom: 20px; /* Space below the header */
+}
+
+.home-container p {
+  color: #ccc; /* Light gray text for the paragraph */
+  max-width: 600px; /* Restricts paragraph width for better readability */
+  margin-bottom: 20px; /* Space below the paragraph */
+}
+
+.home-container a {
+  color: #4CAF50; /* Green text for links for better visibility */
+  text-decoration: none; /* Removes underline from links */
+  font-weight: bold; /* Makes font bold */
+  padding: 10px 20px; /* Padding inside the link to make it look like a button */
+  border: 1px solid #4CAF50; /* Green border to match the text color */
+  border-radius: 5px; /* Rounded corners for the link/button */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+
+.home-container a:hover {
+  background-color: #4CAF50; /* Changes background to green on hover */
+  color: #fff; /* Changes text color to white on hover */
+}
+
+/* Add this to App.css */
+.login-form {
+  background-color: #333;
+  padding: 20px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  color: white;
+  text-align: center;
+}
+
+.login-form input, .login-form button {
+  width: 90%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+}
+
+.login-form button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background-color: #45a049;
+}
+
+/* Additional styles for voting buttons */
+.vote-button {
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 5px;
+}
+
+.vote-button:hover {
+  opacity: 0.8;
 }
